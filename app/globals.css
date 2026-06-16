@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --shadow-gold: 0 0 0 3px rgba(187, 137, 86, 0.30);
+  --shadow-sm: 0 1px 3px rgba(12, 33, 64, 0.10), 0 1px 2px rgba(12, 33, 64, 0.06);
+  --transition-colors: color 160ms cubic-bezier(0.4, 0, 0.2, 1),
+                       background-color 160ms cubic-bezier(0.4, 0, 0.2, 1),
+                       border-color 160ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  color: #0C2140;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  font-family: inherit;
+}
+
+@keyframes waveReveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0%   0 0); }
+}
+
+/* Icons orbit clockwise on an ellipse around the title. They stay flat (2D),
+   but scale, opacity and blur shift with vertical position to fake depth —
+   faded + small at the back (top), full + sharp at the front (bottom). */
+@keyframes hwWheelOrbit {
+  0%    { transform: translate(-50%, calc(-50% - var(--ry)))                                scale(0.65);  opacity: 0.16; filter: blur(2px);   }
+  12.5% { transform: translate(calc(-50% + var(--rx) * 0.707), calc(-50% - var(--ry) * 0.707)) scale(0.70);  opacity: 0.21; filter: blur(1.6px); }
+  25%   { transform: translate(calc(-50% + var(--rx)), -50%)                                 scale(0.825); opacity: 0.33; filter: blur(1px);   }
+  37.5% { transform: translate(calc(-50% + var(--rx) * 0.707), calc(-50% + var(--ry) * 0.707)) scale(0.95);  opacity: 0.45; filter: blur(0.4px); }
+  50%   { transform: translate(-50%, calc(-50% + var(--ry)))                                 scale(1);     opacity: 0.50; filter: blur(0px);   }
+  62.5% { transform: translate(calc(-50% - var(--rx) * 0.707), calc(-50% + var(--ry) * 0.707)) scale(0.95);  opacity: 0.45; filter: blur(0.4px); }
+  75%   { transform: translate(calc(-50% - var(--rx)), -50%)                                 scale(0.825); opacity: 0.33; filter: blur(1px);   }
+  87.5% { transform: translate(calc(-50% - var(--rx) * 0.707), calc(-50% - var(--ry) * 0.707)) scale(0.70);  opacity: 0.21; filter: blur(1.6px); }
+  100%  { transform: translate(-50%, calc(-50% - var(--ry)))                                scale(0.65);  opacity: 0.16; filter: blur(2px);   }
+}
+
+.hw-wheel-icon {
+  animation: hwWheelOrbit 40s linear infinite;
+}
+
+/* One-time entrance when the page opens: the whole wheel fades in and expands
+   outward from the centre into its orbit, then keeps spinning. */
+@keyframes hwWheelReveal {
+  from { opacity: 0; transform: scale(0.72); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.hw-wheel-stage {
+  animation: hwWheelReveal 1100ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: center;
+  will-change: opacity, transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hw-wheel-icon {
+    animation: none;
+  }
+  .hw-wheel-stage {
+    animation: none;
+  }
+}
+
+/* Two interlocked hero gears. They rotate about their own centres in opposite
+   directions; the speeds (set per-class below) match the tooth-count ratio so
+   the meshed teeth stay aligned. */
+@keyframes hwGearCW  { from { transform: rotate(0deg); }    to { transform: rotate(360deg); } }
+@keyframes hwGearCCW { from { transform: rotate(0deg); }    to { transform: rotate(-360deg); } }
+
+.hw-gear {
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform;
+}
+.hw-gear-cw  { animation: hwGearCW 32s linear infinite; }
+.hw-gear-ccw { animation: hwGearCCW 22s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hw-gear-cw, .hw-gear-ccw { animation: none; }
+}
