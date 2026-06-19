@@ -83,48 +83,25 @@ export default function ApplyPage() {
             Apply for investment consideration
           </h1>
           <p className="max-w-[640px] mx-auto mt-[26px] text-[19px] leading-[1.62] text-navy-700">
-            We make initial investments of at least{" "}
+            We make initial investments of {" "}
             <span className="text-navy-900 font-semibold">$100,000</span> in
-            pre-revenue companies solving hard, valuable problems.
+            pre-revenue companies solving intricate, valuable problems.{" "}
+            <span className="font-bold text-navy-900">
+              Read below for instructions on what to submit.
+            </span>
           </p>
-          <p className="mt-3 text-[14px] font-semibold tracking-[0.14em] uppercase text-gold-700">
-            Hardware-first · Science-deep · Founder-friendly
-          </p>
-          <div className="mt-[34px] flex justify-center">
+          <div className="mt-[34px] flex justify-center gap-4 flex-wrap">
             <Button variant="primary" size="lg" href={`mailto:${APPLY_EMAIL}`}>
               Email Your Application →
             </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Intro ── */}
-      <section className="bg-navy-50 border-y border-navy-100 py-[72px]">
-        <div className="max-w-[1100px] mx-auto px-8">
-          <div className="grid grid-cols-[1.1fr_1fr] gap-[72px] items-start">
-            <FadeIn>
-              <h2
-                className="font-display font-extrabold text-navy-900 leading-[1.14] tracking-[-0.02em] m-0"
-                style={{ fontSize: "clamp(1.8rem, 3.2vw, 2.6rem)" }}
-              >
-                Intentionally short. We respect your time.
-              </h2>
-            </FadeIn>
-            <FadeIn delay={120}>
-              <div>
-                <p className="text-[17px] leading-[1.7] text-navy-700 mb-[18px]">
-                  We believe the best way to evaluate an opportunity is through
-                  direct conversation, not paperwork. Answer the five questions,
-                  attach your pitch deck, and — if you're willing — record a brief
-                  video.
-                </p>
-                <p className="text-[15px] leading-[1.65] text-navy-500 m-0">
-                  We do not require or enter into NDAs with prospective portfolio
-                  companies. Please don't include anything you're not comfortable
-                  sharing without one in place.
-                </p>
-              </div>
-            </FadeIn>
+            <Button
+              variant="secondary"
+              size="lg"
+              href="/headwaters-seed-application.docx"
+              download
+            >
+              Download Template
+            </Button>
           </div>
         </div>
       </section>

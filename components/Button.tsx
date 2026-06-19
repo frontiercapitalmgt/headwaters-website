@@ -11,6 +11,7 @@ interface ButtonProps {
   children: React.ReactNode;
   className?: string;
   type?: "button" | "submit";
+  download?: boolean;
 }
 
 const variantClasses: Record<Variant, string> = {
@@ -36,10 +37,20 @@ export default function Button({
   children,
   className = "",
   type = "button",
+  download = false,
 }: ButtonProps) {
   const base =
     "inline-flex items-center justify-center font-bold tracking-[0.03em] uppercase rounded transition-colors duration-150 cursor-pointer";
   const classes = `${base} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+
+  // Plain anchor for file downloads (Next Link doesn't forward the download attr)
+  if (href && download) {
+    return (
+      <a href={href} download className={classes}>
+        {children}
+      </a>
+    );
+  }
 
   if (href) {
     return (

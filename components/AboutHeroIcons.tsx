@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 
 const DURATION = 40; // seconds for one full clockwise revolution
 
@@ -71,33 +71,68 @@ const icons = [
 ];
 
 export default function AboutHeroIcons() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      // As the landing section scrolls away, the wheel balloons outward from
+      // the centre and fades — most of it happens over the first ~70% viewport.
+      const p = Math.min(Math.max(window.scrollY / (window.innerHeight * 0.7), 0), 1);
+      el.style.transform = `scale(${1 + p * 0.85})`;
+      el.style.opacity = String(1 - p);
+    };
+
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    update();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
     <div
+      ref={scrollRef}
       aria-hidden="true"
-      className="hw-wheel-stage absolute inset-0 z-0 pointer-events-none"
-      style={
-        {
-          "--rx": "clamp(380px, 60vw, 760px)",
-          "--ry": "clamp(214px, 31vw, 378px)",
-        } as CSSProperties
-      }
+      className="absolute inset-0 z-0 pointer-events-none"
+      style={{ transformOrigin: "center", willChange: "transform, opacity" }}
     >
-      {icons.map((glyph, i) => (
-        <svg
-          key={i}
-          viewBox="0 0 120 120"
-          className="hw-wheel-icon absolute left-1/2 top-1/2"
-          style={{
-            width: "clamp(102px, 12.5vw, 174px)",
-            height: "clamp(102px, 12.5vw, 174px)",
-            // Animation overrides these; they remain as the reduced-motion pose.
-            ...slots[i],
-            animationDelay: `${-((i / 6) * DURATION).toFixed(3)}s`,
-          }}
-        >
-          {glyph}
-        </svg>
-      ))}
+      <div
+        className="hw-wheel-stage absolute inset-0"
+        style={
+          {
+            "--rx": "clamp(380px, 60vw, 760px)",
+            "--ry": "clamp(214px, 31vw, 378px)",
+          } as CSSProperties
+        }
+      >
+        {icons.map((glyph, i) => (
+          <svg
+            key={i}
+            viewBox="0 0 120 120"
+            className="hw-wheel-icon absolute left-1/2 top-1/2"
+            style={{
+              width: "clamp(102px, 12.5vw, 174px)",
+              height: "clamp(102px, 12.5vw, 174px)",
+              // Animation overrides these; they remain as the reduced-motion pose.
+              ...slots[i],
+              animationDelay: `${-((i / 6) * DURATION).toFixed(3)}s`,
+            }}
+          >
+            {glyph}
+          </svg>
+        ))}
+      </div>
     </div>
   );
 }

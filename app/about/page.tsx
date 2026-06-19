@@ -71,8 +71,8 @@ export default function AboutPage() {
         className="relative overflow-hidden bg-white"
         style={{ minHeight: "86vh" }}
       >
+        <AboutHeroIcons />
         <HeroScrollFade className="absolute inset-0 flex items-center justify-center">
-          <AboutHeroIcons />
           <div className="relative z-10 max-w-[880px] px-8 text-center">
             <Eyebrow label="About Headwaters" centered />
             <h1
