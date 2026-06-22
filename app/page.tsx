@@ -205,12 +205,12 @@ export default function HomePage() {
               Building something hard? We'd like to meet you.
             </h2>
             <p className="max-w-[560px] mx-auto mt-[22px] text-[18px] leading-[1.6] text-navy-200">
-              No formal pitch required. Send us a note and a short deck — we read
-              everything.
+              No formal pitch required. Submit your application in a few minutes —
+              we read every one.
             </p>
             <div className="mt-9 flex justify-center">
-              <Button variant="accent" size="lg" href="/founders">
-                Start a Conversation →
+              <Button variant="accent" size="lg" href="/portfolio">
+                How to Apply →
               </Button>
             </div>
           </div>

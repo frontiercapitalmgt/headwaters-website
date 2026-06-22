@@ -8,9 +8,9 @@ import RiverDivider from "@/components/RiverDivider";
 import FadeIn from "@/components/FadeIn";
 
 const steps = [
-  { k: "01", title: "Reach out", body: "Send a short note and a deck. No warm intro required — we read everything that comes in." },
+  { k: "01", title: "Reach out", body: "View our application page to submit an application form and deck. We read everything that comes in." },
   { k: "02", title: "First conversation", body: "A 30-minute call, founder to operator. No formal pitch, just an honest talk about what you're building." },
-  { k: "03", title: "Technical deep-dive", body: "We dig into the hard parts with you. When needed, we bring in domain specialists and technical advisors to pressure-test the thesis alongside us — that's not a red flag, it's how we work." },
+  { k: "03", title: "Technical deep-dive", body: "We dig into the hard parts with you. When needed, we bring in domain specialists and technical advisors to pressure-test the thesis alongside us." },
   { k: "04", title: "A clear answer in two weeks", body: "A definitive yes or no — fast. If it's a yes, the $100K moves quickly and the work begins." },
 ];
 
@@ -35,8 +35,8 @@ export default function FoundersPage() {
             </FadeIn>
             <FadeIn yOffset={22} delay={180}>
               <div className="mt-[34px] flex justify-center">
-                <Button variant="primary" size="lg" href="mailto:founders@headwaters.com">
-                  Send Us Your Deck →
+                <Button variant="primary" size="lg" href="/portfolio">
+                  How to Apply →
                 </Button>
               </div>
             </FadeIn>
@@ -86,7 +86,7 @@ export default function FoundersPage() {
             className="font-display font-extrabold text-navy-900 leading-[1.12] tracking-[-0.02em] mt-[18px] mb-11"
             style={{ fontSize: "clamp(1.8rem, 3.2vw, 2.6rem)" }}
           >
-            From first note to first check in two weeks
+            From first note to first check ASAP
           </h2>
           <div className="flex flex-col">
             {steps.map((s) => (
@@ -123,13 +123,12 @@ export default function FoundersPage() {
             Building something hard? We'd like to meet you.
           </h2>
           <p className="max-w-[560px] mx-auto mt-[22px] text-[18px] leading-[1.6] text-navy-200">
-            Send a note and a short deck to{" "}
-            <span className="text-gold-300">founders@headwaters.com</span> — we
-            read everything.
+            No formal pitch required. Submit your application in a few minutes —
+            we read every one.
           </p>
           <div className="mt-9 flex justify-center">
-            <Button variant="accent" size="lg" href="mailto:founders@headwaters.com">
-              Start a Conversation →
+            <Button variant="accent" size="lg" href="/portfolio">
+              How to Apply →
             </Button>
           </div>
         </div>
