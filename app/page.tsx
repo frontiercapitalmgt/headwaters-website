@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Eyebrow from "@/components/Eyebrow";
 import Button from "@/components/Button";
 import WaveGraphic from "@/components/WaveGraphic";
@@ -79,12 +78,6 @@ export default function HomePage() {
                   the clock that forces premature exits — we're designed for
                   hardtech timelines, not a traditional fund lifecycle.
                 </p>
-                <Link
-                  href="/insights"
-                  className="text-[14px] font-bold tracking-[0.03em] uppercase text-gold-700 hover:text-gold-600 transition-colors"
-                >
-                  Read our writing →
-                </Link>
               </div>
             </FadeIn>
           </div>

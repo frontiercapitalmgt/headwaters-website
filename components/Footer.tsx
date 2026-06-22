@@ -37,7 +37,6 @@ export default function Footer() {
               {[
                 { label: "About", href: "/about" },
                 { label: "Apply", href: "/portfolio" },
-                { label: "Insights", href: "/insights" },
               ].map((l) => (
                 <Link
                   key={l.href}
