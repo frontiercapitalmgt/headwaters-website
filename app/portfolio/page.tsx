@@ -43,13 +43,10 @@ export default function ApplyPage() {
           </FadeIn>
           <FadeIn delay={160}>
             <p className="max-w-[640px] mx-auto mt-[26px] text-[19px] leading-[1.62] text-navy-700">
-              We write {" "}
-              <span className="text-navy-900 font-semibold">$100k–$250k</span>{" "}
-              checks into pre-revenue companies solving intricate, valuable
-              problems.{" "}
-              <span className="font-bold text-navy-900">
+              We invest in {" "}
+              <span className="text-navy-900 font-semibold">pre-revenue companies solving intricate, valuable
+              problems.</span>{" "}{" "}
                 Read below for instructions on what to submit.
-              </span>
             </p>
           </FadeIn>
           <FadeIn delay={240}>
@@ -78,7 +75,7 @@ export default function ApplyPage() {
                 className="font-display font-extrabold text-navy-900 leading-[1.12] tracking-[-0.02em] mt-[18px]"
                 style={{ fontSize: "clamp(1.8rem, 3.2vw, 2.6rem)" }}
               >
-                Three things, one submission
+                Three parts, one submission
               </h2>
             </div>
           </FadeIn>

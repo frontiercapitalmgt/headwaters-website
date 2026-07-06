@@ -9,9 +9,9 @@ type Stat = {
 };
 
 const stats: Stat[] = [
-  { value: "$100K", label: "First check", icon: "check" },
+  { value: "$100k–$250k", label: "First check", icon: "check" },
   { value: "$250K", label: "Max follow-on per company", icon: "growth" },
-  { value: "Pre-revenue", label: "The stage we lead", icon: "seed" },
+  { value: "Pre-revenue", label: "The stage we invest", icon: "seed" },
 ];
 
 function Icon({ id }: { id: Stat["icon"] }) {

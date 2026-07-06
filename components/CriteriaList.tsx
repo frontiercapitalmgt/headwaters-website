@@ -8,7 +8,7 @@ const criteria = [
   { k: "03", title: "A genuinely hard problem", body: "The work must demand real technical or scientific innovation — not incremental improvement on what already exists." },
   { k: "04", title: "A valuable problem", body: "A large market, a critical infrastructure need, or a gap that customers will pay meaningfully to close." },
   { k: "05", title: "Founders first", body: "The earlier and less proven the technology, the more exceptional the founding team has to be." },
-  { k: "06", title: "Capital discipline", body: "A clear path from a $100K first check to defined technical milestones and a credible next round." },
+  { k: "06", title: "Capital discipline", body: "A clear path from initial investment to defined technical milestones and a credible next round." },
 ];
 
 function CriteriaRow({

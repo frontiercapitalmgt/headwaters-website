@@ -26,7 +26,7 @@ const questions = [
   {
     k: "5",
     title: "How will you use this investment, and what will it unlock?",
-    body: "Our initial investment is at least $100,000, with follow-on reserves of up to $250,000. Tell us how the capital will be deployed, what milestones it funds, and what those milestones unlock — a next round, a technical proof point, or a customer pilot. Mention any non-dilutive sources (grants, SBIR, partnerships) too.",
+    body: "We make initial investments with deployment and execution in mind. Tell us how the capital will be deployed, what milestones it funds, and what those milestones unlock — a next round, a technical proof point, or a customer pilot. Mention any non-dilutive sources (grants, SBIR, partnerships) too.",
   },
 ];
 

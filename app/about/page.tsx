@@ -132,7 +132,7 @@ export default function AboutPage() {
                 filter is the problem itself.
               </p>
               <p className="text-[17px] leading-[1.7] text-navy-700 mb-[18px]">
-                We write the first $100K check — from concept stage through early
+                We make initial investments from concept stage through early
                 prototype — then roll up our sleeves. We're operators who have
                 built physical products before. We know the road because we've
                 walked it.

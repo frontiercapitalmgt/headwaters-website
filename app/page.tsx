@@ -73,7 +73,7 @@ export default function HomePage() {
                   our mandate. We follow the problem, not the category.
                 </p>
                 <p className="text-[19px] leading-[1.72] text-navy-700 mb-[24px]">
-                  We write $100k–$250k checks into pre-revenue teams to support
+                  We make $100k–$250k investments into pre-revenue teams to support
                   concept through early prototype. Our perpetual fund structure eliminates
                   the clock that forces premature exits — we're designed for
                   hardtech timelines, not a traditional fund lifecycle.
@@ -170,10 +170,9 @@ export default function HomePage() {
                   You want frontier exposure
                 </h3>
                 <p className="text-[16px] leading-[1.65] text-navy-700 mb-7">
-                  Headwaters Seed Stage Fund I is an evergreen vehicle — 20
-                  pre-revenue hardtech companies, $100K initial checks, up to
-                  $250K follow-on per company. No fund clock forcing premature
-                  exits. Returns recycled into the next cohort.
+                  Headwaters Seed Stage Fund I is an evergreen vehicle: ~20
+                  pre-revenue hardtech companies, initial → follow-on investments, and 
+                  no fund clock forcing premature exits. Returns recycled into the next cohort.
                 </p>
                 <div className="mt-auto">
                   <Button variant="secondary" size="md" href="/about">
