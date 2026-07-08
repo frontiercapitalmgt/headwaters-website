@@ -55,16 +55,16 @@ export default function Footer() {
             </div>
             <div className="flex flex-col gap-[11px]">
               {[
-                "See if we're a fit",
-                "What we look for",
-                "Apply",
-              ].map((label) => (
+                { label: "See if we're a fit", href: "/founders" },
+                { label: "What we look for", href: "/founders" },
+                { label: "Apply", href: "/portfolio" },
+              ].map((l) => (
                 <Link
-                  key={label}
-                  href="/founders"
+                  key={l.label}
+                  href={l.href}
                   className="text-sm text-navy-200 hover:text-white transition-colors"
                 >
-                  {label}
+                  {l.label}
                 </Link>
               ))}
             </div>
@@ -72,27 +72,20 @@ export default function Footer() {
 
           <div>
             <div className="text-[11px] font-bold tracking-[0.14em] uppercase text-gold-500 mb-4">
-              Connect
+              Get In Touch
             </div>
             <div className="flex flex-col gap-[11px]">
               <a
-                href="mailto:hello@headwatersvc.com"
+                href="tel:+14065187810"
                 className="text-sm text-navy-200 hover:text-white transition-colors"
               >
-                hello@headwatersvc.com
+                (406) 518-7810
               </a>
-              <a
-                href="#"
-                className="text-sm text-navy-200 hover:text-white transition-colors"
-              >
-                LinkedIn
-              </a>
-              <a
-                href="#"
-                className="text-sm text-navy-200 hover:text-white transition-colors"
-              >
-                X / Twitter
-              </a>
+              <div className="text-sm text-navy-300 leading-relaxed">
+                PO Box 4781
+                <br />
+                Bozeman, MT 59772
+              </div>
             </div>
           </div>
         </div>

@@ -37,13 +37,6 @@ button {
   to   { opacity: 1; transform: none; }
 }
 
-/* Keep the Fillout popup's outer card from showing a scrollbar it doesn't need
-   (without clipping the close button, which sits just outside the corner).
-   The form still scrolls internally when its content is actually taller. */
-.fillout-embed-popup-main {
-  overflow: visible !important;
-}
-
 /* Icons orbit clockwise on an ellipse around the title. They stay flat (2D),
    but scale, opacity and blur shift with vertical position to fake depth —
    faded + small at the back (top), full + sharp at the front (bottom). */

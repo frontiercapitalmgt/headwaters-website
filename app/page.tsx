@@ -153,7 +153,7 @@ export default function HomePage() {
                 </p>
                 <div className="mt-auto">
                   <Button variant="accent" size="md" href="/founders">
-                    See if we're a fit →
+                    See if we're a fit
                   </Button>
                 </div>
               </div>

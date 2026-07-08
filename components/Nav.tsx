@@ -19,11 +19,11 @@ export default function Nav() {
       <div className="max-w-[1200px] mx-auto px-8 h-[86px] flex items-center justify-between">
         <Link href="/" className="flex items-center">
           <Image
-            src="/headwaters-wave.png"
-            alt="Headwaters"
-            height={54}
-            width={220}
-            style={{ height: "54px", width: "auto" }}
+            src="/headwaters-logo-seed.png"
+            alt="Headwaters Seed Stage Fund I"
+            height={58}
+            width={192}
+            style={{ height: "58px", width: "auto" }}
             priority
           />
         </Link>

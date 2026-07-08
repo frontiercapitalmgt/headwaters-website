@@ -1,5 +1,7 @@
+import Link from "next/link";
 import Eyebrow from "@/components/Eyebrow";
 import Button from "@/components/Button";
+import { team, initials } from "@/lib/team";
 import AboutHeroIcons from "@/components/AboutHeroIcons";
 import TypewriterText from "@/components/TypewriterText";
 import HeroScrollFade from "@/components/HeroScrollFade";
@@ -40,28 +42,6 @@ const beliefs = [
   },
 ];
 
-const team = [
-  {
-    name: "Sarah Whitfield",
-    role: "Founder & Managing Partner",
-    bio: "Former hardware operator with two exits in industrial robotics.",
-  },
-  {
-    name: "James Calloway",
-    role: "General Partner",
-    bio: "Twenty-five years backing deep-tech founders across the Rockies.",
-  },
-  {
-    name: "Maya Okafor",
-    role: "Partner, Technical",
-    bio: "PhD in materials science. A decade in the lab before the cap table.",
-  },
-  {
-    name: "Daniel Reyes",
-    role: "Partner, Platform",
-    bio: "Builds the operator network founders lean on after the check clears.",
-  },
-];
 
 export default function AboutPage() {
   return (
@@ -168,48 +148,47 @@ export default function AboutPage() {
               className="font-display font-extrabold leading-[1.1] tracking-[-0.02em] m-0"
               style={{ fontSize: "clamp(1.9rem, 3.4vw, 2.8rem)" }}
             >
-              <span className="text-gold-600">The team</span>{" "}
-              <span className="text-navy-900">behind the work</span>
+              <span className="text-gold-600">The people</span>{" "}
+              <span className="text-navy-900">behind Headwaters</span>
             </h2>
             <p className="text-[18px] leading-[1.62] text-navy-700 mt-[22px]">
-              Headwaters was founded by operators and investors who have spent
-              their careers building and backing hard technology across the
-              Northern Rockies and beyond.
+              Our Investment Committee brings together operators, scientists, and
+              builders who have spent their careers creating and backing hard
+              technology across the Northern Rockies and beyond.
             </p>
           </div>
-          <div className="grid grid-cols-4 gap-5 mt-[52px]">
+          <div className="grid grid-cols-3 gap-5 mt-[52px]">
             {team.map((m) => (
-              <div
-                key={m.name}
-                className="bg-white border border-navy-100 rounded-lg overflow-hidden shadow-sm"
+              <Link
+                key={m.slug}
+                href={`/team/${m.slug}`}
+                className="group bg-white border border-navy-100 rounded-lg overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-[2px] transition-[box-shadow,transform] duration-300"
               >
                 <div
-                  className="w-full bg-navy-100 flex items-end justify-center"
-                  style={{ height: "280px" }}
+                  className="w-full bg-gradient-to-b from-navy-50 to-navy-100 flex items-center justify-center"
+                  style={{ height: "260px" }}
                 >
-                  <div className="w-full h-full bg-gradient-to-b from-navy-50 to-navy-100 flex items-center justify-center">
-                    <div className="w-20 h-20 rounded-full bg-navy-200 flex items-center justify-center">
-                      <span className="font-display font-bold text-[22px] text-navy-700">
-                        {m.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </span>
-                    </div>
+                  <div className="w-24 h-24 rounded-full bg-navy-200 flex items-center justify-center">
+                    <span className="font-display font-bold text-[26px] text-navy-700">
+                      {initials(m.name)}
+                    </span>
                   </div>
                 </div>
-                <div className="p-[22px]">
-                  <div className="font-display font-bold text-[19px] text-navy-900">
+                <div className="p-[24px]">
+                  <div className="font-display font-bold text-[20px] text-navy-900">
                     {m.name}
                   </div>
                   <div className="text-[11px] font-bold tracking-[0.1em] uppercase text-gold-700 mt-[6px]">
                     {m.role}
                   </div>
                   <p className="text-[14px] leading-[1.55] text-navy-600 mt-[14px] mb-0">
-                    {m.bio}
+                    {m.excerpt}
                   </p>
+                  <span className="inline-block mt-[16px] text-[13px] font-bold tracking-[0.04em] uppercase text-gold-700 group-hover:text-gold-600 transition-colors">
+                    View profile →
+                  </span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
