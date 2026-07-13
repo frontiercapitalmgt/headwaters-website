@@ -148,8 +148,8 @@ export default function HomePage() {
                 </h3>
                 <p className="text-[16px] leading-[1.65] text-navy-200 mb-7">
                   Pre-revenue, pre-prototype, pre-everyone-else. We move fast,
-                  dig into the engineering, and give you a clear answer in two
-                  weeks.
+                  dig into the engineering, and give you a clear answer in a
+                  timely manner.
                 </p>
                 <div className="mt-auto">
                   <Button variant="accent" size="md" href="/founders">
@@ -172,7 +172,7 @@ export default function HomePage() {
                 <p className="text-[16px] leading-[1.65] text-navy-700 mb-7">
                   Headwaters Seed Stage Fund I is an evergreen vehicle: ~20
                   pre-revenue hardtech companies, initial → follow-on investments, and 
-                  no fund clock forcing premature exits. Returns recycled into the next cohort.
+                  no fund clock forcing premature exits. Returns recycled into the next cohort. By invitation only, through a sidecar investment vehicle.
                 </p>
                 <div className="mt-auto">
                   <Button variant="secondary" size="md" href="/about">
