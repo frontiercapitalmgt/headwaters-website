@@ -167,7 +167,8 @@ export default function ApplyPage() {
                 className="font-display font-extrabold text-navy-900 leading-[1.12] tracking-[-0.02em] mt-[18px]"
                 style={{ fontSize: "clamp(1.8rem, 3.2vw, 2.6rem)" }}
               >
-                Use a video to tell us more about you and your solution
+                Use a video to tell us more about you, why the problem you are
+                solving is hard, and why your solution is valuable
               </h2>
             </div>
           </FadeIn>

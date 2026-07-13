@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import Eyebrow from "@/components/Eyebrow";
 import Button from "@/components/Button";
 import { team, initials } from "@/lib/team";
@@ -23,7 +24,7 @@ const beliefs = [
   {
     k: "03",
     title: "Decisive and founder-friendly",
-    body: "Hardtech founders are consistently underserved by traditional capital. We move fast: no warm intro required, clean terms, and a clear answer within two weeks of first contact.",
+    body: "Hardtech founders are consistently underserved by traditional capital. We move fast: no warm intro required, clean terms, and a clear answer in a timely manner.",
   },
   {
     k: "04",
@@ -165,14 +166,24 @@ export default function AboutPage() {
                 className="group bg-white border border-navy-100 rounded-lg overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-[2px] transition-[box-shadow,transform] duration-300"
               >
                 <div
-                  className="w-full bg-gradient-to-b from-navy-50 to-navy-100 flex items-center justify-center"
+                  className="w-full bg-gradient-to-b from-navy-50 to-navy-100 flex items-center justify-center overflow-hidden"
                   style={{ height: "260px" }}
                 >
-                  <div className="w-24 h-24 rounded-full bg-navy-200 flex items-center justify-center">
-                    <span className="font-display font-bold text-[26px] text-navy-700">
-                      {initials(m.name)}
-                    </span>
-                  </div>
+                  {m.photo ? (
+                    <Image
+                      src={m.photo}
+                      alt={m.name}
+                      width={340}
+                      height={260}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-24 h-24 rounded-full bg-navy-200 flex items-center justify-center">
+                      <span className="font-display font-bold text-[26px] text-navy-700">
+                        {initials(m.name)}
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <div className="p-[24px]">
                   <div className="font-display font-bold text-[20px] text-navy-900">
@@ -181,6 +192,11 @@ export default function AboutPage() {
                   <div className="text-[11px] font-bold tracking-[0.1em] uppercase text-gold-700 mt-[6px]">
                     {m.role}
                   </div>
+                  {m.role2 && (
+                    <div className="text-[11px] font-bold tracking-[0.1em] uppercase text-gold-700 mt-[3px]">
+                      {m.role2}
+                    </div>
+                  )}
                   <p className="text-[14px] leading-[1.55] text-navy-600 mt-[14px] mb-0">
                     {m.excerpt}
                   </p>

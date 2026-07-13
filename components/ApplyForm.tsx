@@ -190,8 +190,8 @@ export default function ApplyForm({ onClose }: { onClose: () => void }) {
           Application received
         </h3>
         <p className="text-[15px] leading-[1.6] text-navy-600 mt-3 max-w-[400px] mx-auto">
-          Thank you. We review every application and will be in touch within two
-          weeks.
+          Thank you. We review every application and will be in touch in a
+          timely manner.
         </p>
         <button
           onClick={onClose}

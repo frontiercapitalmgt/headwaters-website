@@ -64,6 +64,9 @@ export default async function TeamMemberPage({
                 {member.name}
               </h1>
               <p className="text-[16px] text-navy-500 mt-2">{member.role}</p>
+              {member.role2 && (
+                <p className="text-[16px] text-navy-500 mt-1">{member.role2}</p>
+              )}
               {member.linkedin && (
                 <a
                   href={member.linkedin}

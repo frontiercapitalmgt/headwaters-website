@@ -11,7 +11,7 @@ const steps = [
   { k: "01", title: "Reach out", body: "View our application page to submit an application form and deck. We read everything that comes in." },
   { k: "02", title: "First conversation", body: "A 30-minute call, founder to operator. No formal pitch, just an honest talk about what you're building." },
   { k: "03", title: "Technical deep-dive", body: "We dig into the hard parts with you. When needed, we bring in domain specialists and technical advisors to pressure-test the thesis alongside us." },
-  { k: "04", title: "A clear answer in two weeks", body: "A definitive yes or no — fast. If it's a yes, the investment moves quickly and the work begins." },
+  { k: "04", title: "A clear answer in a timely manner", body: "A definitive yes or no — fast. If it's a yes, the investment moves quickly and the work begins." },
 ];
 
 export default function FoundersPage() {

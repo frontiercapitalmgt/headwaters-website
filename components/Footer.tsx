@@ -94,9 +94,6 @@ export default function Footer() {
           <span className="text-[13px] text-navy-400">
             © {year} Headwaters Capital. All rights reserved.
           </span>
-          <span className="text-[13px] text-navy-400">
-            Investments involve risk, including loss of principal.
-          </span>
         </div>
       </div>
     </footer>

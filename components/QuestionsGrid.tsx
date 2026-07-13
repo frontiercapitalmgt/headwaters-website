@@ -10,8 +10,8 @@ const questions = [
   },
   {
     k: "2",
-    title: "Why is this problem valuable, and to whom?",
-    body: "A hard problem only qualifies if solving it creates meaningful value. What is the market opportunity? Who are the customers, and what evidence — conversations, letters of intent, pilot commitments, market data — shows they will pay to close this gap?",
+    title: "Why is the solution valuable, and to whom?",
+    body: "A solution only qualifies if it creates meaningful value. What is the market opportunity? Who are the customers, and what evidence — conversations, letters of intent, pilot commitments, market data — shows they will pay for it?",
   },
   {
     k: "3",
