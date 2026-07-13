@@ -6,7 +6,7 @@ const criteria = [
   { k: "01", title: "Pre-revenue", body: "We invest from concept stage through early prototype — before a company has generated meaningful recurring revenue." },
   { k: "02", title: "Hardware-related", body: "Hardware-enabled innovation is our primary lens. We stay open to genuine deep tech, with no sector dogma." },
   { k: "03", title: "A genuinely hard problem", body: "The work must demand real technical or scientific innovation — not incremental improvement on what already exists." },
-  { k: "04", title: "A valuable problem", body: "A large market, a critical infrastructure need, or a gap that customers will pay meaningfully to close." },
+  { k: "04", title: "A valuable solution", body: "A large market, a critical infrastructure need, or a gap that customers will pay meaningfully to close." },
   { k: "05", title: "Founders first", body: "The earlier and less proven the technology, the more exceptional the founding team has to be." },
   { k: "06", title: "Capital discipline", body: "A clear path from initial investment to defined technical milestones and a credible next round." },
 ];
