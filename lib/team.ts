@@ -16,6 +16,7 @@ export const team: TeamMember[] = [
     role: "Managing Director, Frontier Angels and Frontier Funds 3-5",
     role2: "Fund Manager, Headwaters Seed Stage Fund I",
     photo: "/team/graham-conran.png",
+    linkedin: "https://www.linkedin.com/in/grahamconran/",
     excerpt:
       "Managing Director of Frontier Angels, blending startup leadership with over a decade of corporate finance at JPMorgan and Nomura.",
     bio: [
