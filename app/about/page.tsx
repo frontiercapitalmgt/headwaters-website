@@ -24,7 +24,7 @@ const beliefs = [
   {
     k: "03",
     title: "Decisive and founder-friendly",
-    body: "Hardtech founders are consistently underserved by traditional capital. We move fast: no warm intro required, clean terms, and a clear answer within two weeks of first contact.",
+    body: "Hardtech founders are consistently underserved by traditional capital. We move fast: no warm intro required, clean terms, and a clear answer in a timely manner.",
   },
   {
     k: "04",
