@@ -49,7 +49,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-white">
       {/* ── Hero ── */}
       <section
-        className="relative overflow-hidden bg-white"
+        className="relative z-20 overflow-x-clip bg-white"
         style={{ minHeight: "86vh" }}
       >
         <AboutHeroIcons />

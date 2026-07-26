@@ -23,7 +23,7 @@ export default function HeroContent() {
     <div ref={ref} className="flex flex-col items-center text-center will-change-transform">
       <h1
         className="font-display font-extrabold text-navy-900 leading-[1.06] tracking-[-0.028em] mx-auto text-balance max-w-[960px]"
-        style={{ fontSize: "clamp(3.4rem, 7vw, 6rem)" }}
+        style={{ fontSize: "clamp(3rem, 6vw, 5.2rem)" }}
       >
         We back founders at the{" "}
         <span className="text-gold-600 italic font-bold font-cormorant">
@@ -31,7 +31,7 @@ export default function HeroContent() {
         </span>{" "}
         of hard technology
       </h1>
-      <p className="max-w-[660px] mx-auto mt-8 text-[21px] leading-[1.65] text-navy-700">
+      <p className="max-w-[660px] mx-auto mt-8 text-[20px] leading-[1.65] text-navy-700">
         Headwaters invests in pre-revenue teams solving hard
         physical problems — from the Northern Rockies to the frontier of what's
         buildable.
