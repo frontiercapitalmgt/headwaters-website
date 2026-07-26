@@ -41,7 +41,7 @@ export default function HeroContent() {
           For Founders →
         </Button>
         <Button variant="secondary" size="lg" href="/about">
-          For Investors
+          Learn More
         </Button>
       </div>
     </div>
