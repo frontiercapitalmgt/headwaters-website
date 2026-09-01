@@ -77,12 +77,12 @@ export default function AboutPage() {
       </section>
 
       {/* ── Mission ── */}
-      <section className="bg-white border-b border-navy-100 py-[90px]">
+      <section className="bg-white border-b border-navy-100 py-16 sm:py-[90px]">
         <div className="max-w-[1200px] mx-auto px-8">
           <Reveal>
             <Eyebrow label="Our Mission" />
           </Reveal>
-          <div className="grid grid-cols-[1.1fr_1fr] gap-[72px] items-start mt-[26px]">
+          <div className="grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-8 md:gap-[72px] items-start mt-[26px]">
             <Reveal delay={80}>
               <h2
                 className="font-display font-extrabold text-navy-900 leading-[1.14] tracking-[-0.02em] m-0"
@@ -100,7 +100,7 @@ export default function AboutPage() {
               <MissionVideo
                 src="/crane-gold.mp4"
                 poster="/crane-gold-poster.jpg"
-                className="block h-auto mt-8 w-[118%] ml-[48px]"
+                className="block h-auto mt-8 w-full md:w-[118%] ml-0 md:ml-[48px]"
               />
             </Reveal>
             <Reveal delay={180}>
@@ -132,7 +132,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── What We Believe ── */}
-      <section className="bg-white py-[90px]">
+      <section className="bg-white py-16 sm:py-[90px]">
         <div className="max-w-[1200px] mx-auto px-8">
           <Eyebrow label="What We Believe" />
           <div className="mt-8">
@@ -142,7 +142,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── Team ── */}
-      <section className="bg-navy-50 border-t border-navy-100 pt-24 pb-24">
+      <section className="bg-navy-50 border-t border-navy-100 pt-16 sm:pt-24 pb-16 sm:pb-24">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="text-center max-w-[680px] mx-auto">
             <h2
@@ -158,7 +158,7 @@ export default function AboutPage() {
               technology across the Northern Rockies and beyond.
             </p>
           </div>
-          <div className="grid grid-cols-3 gap-5 mt-[52px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-[52px]">
             {team.map((m) => (
               <Link
                 key={m.slug}

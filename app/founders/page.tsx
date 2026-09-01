@@ -58,7 +58,7 @@ export default function FoundersPage() {
         </section>
 
         {/* ── What We Look For ── */}
-        <section className="relative z-10 pt-[8vh] pb-28">
+        <section className="relative z-10 pt-[8vh] pb-16 sm:pb-28">
           <div className="max-w-[1200px] mx-auto px-8">
             <div className="text-center max-w-[640px] mx-auto">
               <FadeIn yOffset={20}>
@@ -79,7 +79,7 @@ export default function FoundersPage() {
       </div>
 
       {/* ── How It Works ── */}
-      <section className="bg-navy-50 border-t border-navy-100 py-24">
+      <section className="bg-navy-50 border-t border-navy-100 py-16 sm:py-24">
         <div className="max-w-[1100px] mx-auto px-8">
           <Eyebrow label="How It Works" />
           <h2
@@ -114,7 +114,7 @@ export default function FoundersPage() {
 
       {/* ── Dark CTA ── */}
       <section className="bg-navy-900">
-        <div className="max-w-[1000px] mx-auto px-8 py-[104px] text-center">
+        <div className="max-w-[1000px] mx-auto px-8 py-20 sm:py-[104px] text-center">
           <Eyebrow label="Get in Touch" centered dark />
           <h2
             className="font-display font-extrabold text-white leading-[1.08] tracking-[-0.02em] mt-6"

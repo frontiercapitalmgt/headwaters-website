@@ -101,7 +101,8 @@ export default function FocusCards() {
     const bot = botRef.current;
     if (!wrap || !top || !bot) return;
 
-    const MAX_SHIFT = 240; // px the rows travel at the extremes
+    // No horizontal travel on small screens (cards are stacked); just fade
+    const MAX_SHIFT = window.innerWidth < 640 ? 0 : 240;
     let raf = 0;
 
     const update = () => {
@@ -143,12 +144,12 @@ export default function FocusCards() {
 
   return (
     <div ref={wrapRef} className="flex flex-col gap-5">
-      <div ref={topRef} className="grid grid-cols-3 gap-5 will-change-transform">
+      <div ref={topRef} className="grid grid-cols-1 sm:grid-cols-3 gap-5 will-change-transform">
         {focus.slice(0, 3).map((f) => (
           <Card key={f.k} k={f.k} title={f.title} body={f.body} />
         ))}
       </div>
-      <div ref={botRef} className="grid grid-cols-3 gap-5 will-change-transform">
+      <div ref={botRef} className="grid grid-cols-1 sm:grid-cols-3 gap-5 will-change-transform">
         {focus.slice(3).map((f) => (
           <Card key={f.k} k={f.k} title={f.title} body={f.body} />
         ))}

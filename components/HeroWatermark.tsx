@@ -30,7 +30,7 @@ export default function HeroWatermark() {
     >
       <span
         className="font-cormorant font-semibold leading-none text-navy-100"
-        style={{ fontSize: "clamp(5rem, 16vw, 14rem)", letterSpacing: "0.01em" }}
+        style={{ fontSize: "clamp(3rem, 16vw, 14rem)", letterSpacing: "0.01em" }}
       >
         {typed}
       </span>
@@ -41,7 +41,7 @@ export default function HeroWatermark() {
           height: "0.72em",
           marginLeft: "0.05em",
           alignSelf: "center",
-          fontSize: "clamp(5rem, 16vw, 14rem)",
+          fontSize: "clamp(3rem, 16vw, 14rem)",
         }}
       />
     </div>

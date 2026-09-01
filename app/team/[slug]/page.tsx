@@ -39,7 +39,7 @@ export default async function TeamMemberPage({
             ← Back to About
           </Link>
 
-          <div className="grid grid-cols-[minmax(300px,400px)_1fr] gap-16 items-start mt-9">
+          <div className="grid grid-cols-1 md:grid-cols-[minmax(300px,400px)_1fr] gap-8 md:gap-16 items-start mt-9">
             {/* Left: portrait + name + role */}
             <div>
               <div className="w-full aspect-square rounded-2xl overflow-hidden bg-gradient-to-b from-navy-100 to-navy-200 flex items-center justify-center shadow-sm">

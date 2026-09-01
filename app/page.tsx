@@ -55,12 +55,12 @@ export default function HomePage() {
       </section>
 
       {/* ── Thesis ── */}
-      <section className="pt-16 pb-28 bg-white">
+      <section className="pt-12 sm:pt-16 pb-16 sm:pb-28 bg-white">
         <div className="max-w-[1200px] mx-auto px-8">
           <FadeIn yOffset={40}>
             <Eyebrow label="Our Thesis" />
           </FadeIn>
-          <div className="grid grid-cols-[1.15fr_1fr] gap-[80px] items-start mt-[32px]">
+          <div className="grid grid-cols-1 md:grid-cols-[1.15fr_1fr] gap-8 md:gap-[80px] items-start mt-[32px]">
             <FadeIn delay={100} yOffset={48}>
               <ThesisHeadline />
             </FadeIn>
@@ -92,7 +92,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Why Headwaters ── */}
-      <section className="py-[90px] bg-navy-50 border-t border-navy-100">
+      <section className="py-16 sm:py-[90px] bg-navy-50 border-t border-navy-100">
         <div className="max-w-[1200px] mx-auto px-8">
           <FadeIn>
             <Eyebrow label="Why Headwaters" />
@@ -103,7 +103,7 @@ export default function HomePage() {
               What founders and investors actually get
             </h2>
           </FadeIn>
-          <div className="grid grid-cols-2 gap-x-10 gap-y-0 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-0 mt-12">
             {valueProps.map((v, i) => (
               <FadeIn key={v.k} delay={i * 70}>
                 <div className="py-8 border-t border-navy-200">
@@ -124,7 +124,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Two Ways In ── */}
-      <section className="py-24 bg-white">
+      <section className="py-16 sm:py-24 bg-white">
         <div className="max-w-[1200px] mx-auto px-8">
           <FadeIn>
             <div className="text-center">
@@ -137,7 +137,7 @@ export default function HomePage() {
               </h2>
             </div>
           </FadeIn>
-          <div className="grid grid-cols-2 gap-6 mt-11">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-11">
             <FadeIn delay={80}>
               <div className="bg-navy-900 rounded-lg p-10 text-white flex flex-col h-full">
                 <span className="text-[11px] font-bold tracking-[0.16em] uppercase text-gold-500">
@@ -188,7 +188,7 @@ export default function HomePage() {
       {/* ── Dark CTA ── */}
       <FadeIn yOffset={16}>
         <section className="bg-navy-900 relative overflow-hidden">
-          <div className="relative max-w-[1000px] mx-auto px-8 py-[104px] text-center">
+          <div className="relative max-w-[1000px] mx-auto px-8 py-20 sm:py-[104px] text-center">
             <Eyebrow label="Get in Touch" centered dark />
             <h2
               className="font-display font-extrabold text-white leading-[1.08] tracking-[-0.02em] mt-6 text-balance"

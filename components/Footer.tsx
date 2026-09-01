@@ -6,8 +6,8 @@ export default function Footer() {
   return (
     <footer className="bg-navy-950 text-navy-200">
       <div className="max-w-[1200px] mx-auto px-8 pt-[72px] pb-9">
-        <div className="grid grid-cols-[1.6fr_1fr_1fr_1fr] gap-10">
-          <div>
+        <div className="grid grid-cols-2 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-8 md:gap-10">
+          <div className="col-span-2 md:col-span-1">
             <Image
               src="/headwaters-wordmark-white.png"
               alt="Headwaters"

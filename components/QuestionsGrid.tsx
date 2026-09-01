@@ -130,7 +130,7 @@ export default function QuestionsGrid() {
     <div ref={wrapRef} className="relative">
       {/* Connector lines, behind the tiles — only visible in the gaps */}
       <svg
-        className="absolute inset-0 w-full h-full pointer-events-none z-0"
+        className="absolute inset-0 w-full h-full pointer-events-none z-0 hidden sm:block"
         aria-hidden="true"
       >
         {segs.map((s, i) => (
@@ -174,7 +174,7 @@ export default function QuestionsGrid() {
       </svg>
 
       {/* The spaced-out tiles */}
-      <div ref={gridRef} className="relative z-10 grid grid-cols-2 gap-9">
+      <div ref={gridRef} className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-9">
         {questions.map((q, i) => (
           <div
             key={q.k}
@@ -182,7 +182,7 @@ export default function QuestionsGrid() {
               tileRefs.current[i] = el;
             }}
             className={`bg-white border border-navy-100 rounded-xl p-9 shadow-sm hover:shadow-md hover:border-gold-200 transition-shadow duration-300 ${
-              i === 4 ? "col-span-2" : ""
+              i === 4 ? "sm:col-span-2" : ""
             }`}
           >
             <div className="font-display font-extrabold text-[38px] leading-none text-gold-600 mb-4">

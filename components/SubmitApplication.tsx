@@ -42,7 +42,7 @@ export default function SubmitApplication({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header (fixed, centered) */}
-        <div className="shrink-0 relative px-12 pt-8 pb-6 border-b border-navy-100 text-center">
+        <div className="shrink-0 relative px-8 sm:px-12 pt-8 pb-6 border-b border-navy-100 text-center">
           <span className="text-[11px] font-bold tracking-[0.16em] uppercase text-gold-700">
             Application
           </span>

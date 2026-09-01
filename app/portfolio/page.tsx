@@ -28,7 +28,7 @@ export default function ApplyPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* ── Hero ── */}
-      <section className="bg-white pt-24 pb-[72px]">
+      <section className="bg-white pt-16 sm:pt-24 pb-14 sm:pb-[72px]">
         <div className="max-w-[880px] mx-auto px-8 text-center">
           <FadeIn className="flex justify-center">
             <Eyebrow label="Application" centered />
@@ -66,7 +66,7 @@ export default function ApplyPage() {
       </section>
 
       {/* ── What to Submit ── */}
-      <section className="bg-white py-24">
+      <section className="bg-white py-16 sm:py-24">
         <div className="max-w-[1200px] mx-auto px-8">
           <FadeIn>
             <div className="text-center max-w-[640px] mx-auto">
@@ -79,7 +79,7 @@ export default function ApplyPage() {
               </h2>
             </div>
           </FadeIn>
-          <div className="grid grid-cols-3 gap-5 mt-12">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-12">
             {submitItems.map((s, i) => {
               const dark = s.featured;
               return (
@@ -134,7 +134,7 @@ export default function ApplyPage() {
       </section>
 
       {/* ── The Five Questions ── */}
-      <section className="bg-navy-50 border-t border-navy-100 py-24">
+      <section className="bg-navy-50 border-t border-navy-100 py-16 sm:py-24">
         <div className="max-w-[1100px] mx-auto px-8">
           <FadeIn>
             <Eyebrow label="The Five Questions" />
@@ -158,7 +158,7 @@ export default function ApplyPage() {
       </section>
 
       {/* ── About the Video ── */}
-      <section className="bg-white py-24">
+      <section className="bg-white py-16 sm:py-24">
         <div className="max-w-[1200px] mx-auto px-8">
           <FadeIn>
             <div className="text-center max-w-[640px] mx-auto">
@@ -172,7 +172,7 @@ export default function ApplyPage() {
               </h2>
             </div>
           </FadeIn>
-          <div className="grid grid-cols-2 gap-5 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-12">
             <FadeIn delay={80} className="h-full">
               <div className="bg-navy-50 border border-navy-100 rounded-xl p-11 h-full flex flex-col">
                 <span className="font-mono text-[13px] font-semibold tracking-[0.08em] uppercase text-gold-600">
@@ -218,7 +218,7 @@ export default function ApplyPage() {
       {/* ── Submission CTA ── */}
       <FadeIn yOffset={16}>
         <section className="bg-navy-900">
-          <div className="max-w-[1000px] mx-auto px-8 py-[100px] text-center">
+          <div className="max-w-[1000px] mx-auto px-8 py-20 sm:py-[100px] text-center">
             <Eyebrow label="Submission" centered dark />
             <h2
               className="font-display font-extrabold text-white leading-[1.1] tracking-[-0.02em] mt-6"

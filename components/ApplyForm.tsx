@@ -180,7 +180,7 @@ export default function ApplyForm({ onClose }: { onClose: () => void }) {
 
   if (status === "success") {
     return (
-      <div className="px-9 py-14 text-center">
+      <div className="px-6 sm:px-9 py-14 text-center">
         <div className="w-14 h-14 mx-auto rounded-full bg-gold-50 border border-gold-200 flex items-center justify-center">
           <svg viewBox="0 0 24 24" className="w-7 h-7 text-gold-600" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M20 6L9 17l-5-5" />
@@ -206,7 +206,7 @@ export default function ApplyForm({ onClose }: { onClose: () => void }) {
   const submitting = status === "submitting";
 
   return (
-    <form onSubmit={handleSubmit} className="px-9 py-7">
+    <form onSubmit={handleSubmit} className="px-5 sm:px-9 py-7">
       {/* Honeypot — hidden from real users */}
       <input
         type="text"
@@ -224,7 +224,7 @@ export default function ApplyForm({ onClose }: { onClose: () => void }) {
           <h3 className="text-[11px] font-bold tracking-[0.14em] uppercase text-gold-700 mb-4">
             About you
           </h3>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="First name" required>
               <input className={inputCls} value={f.firstName} onChange={set("firstName")} />
             </Field>
@@ -245,7 +245,7 @@ export default function ApplyForm({ onClose }: { onClose: () => void }) {
           <h3 className="text-[11px] font-bold tracking-[0.14em] uppercase text-gold-700 mb-4">
             Your company
           </h3>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Company name" required>
               <input className={inputCls} value={f.companyName} onChange={set("companyName")} />
             </Field>
