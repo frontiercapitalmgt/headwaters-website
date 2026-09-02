@@ -60,6 +60,7 @@ export async function POST(req: Request) {
       videoUrl: body.videoUrl,
       applicationFile: signed.application,
       pitchDeck: signed.deck,
+      bundle: signed.bundle,
     });
 
     console.log("[api/apply] done — record created");

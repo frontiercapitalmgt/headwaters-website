@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import JSZip from "jszip";
 import { getBrowserClient, BUCKET } from "@/lib/supabaseBrowser";
 
 const MAX_BYTES = 50 * 1024 * 1024; // 50 MB
@@ -36,6 +37,31 @@ const empty: Fields = {
   currentAsk: "",
   videoUrl: "",
 };
+
+// Plain-text overview of the submission, included inside the bundle zip.
+function buildSummary(f: Fields, appName: string, deckName: string): string {
+  const line = (k: string, v: string) => `${k}: ${v && v.trim() ? v.trim() : "—"}`;
+  return [
+    "Headwaters Seed Stage Fund I — Application",
+    "",
+    line("Company", f.companyName),
+    line("Founder", `${f.firstName} ${f.lastName}`.trim()),
+    line("Email", f.email),
+    line("Phone", f.phone),
+    line("Website", f.website),
+    line("Founded", f.founded),
+    line("Legal structure", f.legalStructure),
+    line("Location", f.location),
+    line("Capital raised to date", f.capitalRaised),
+    line("Current round / ask", f.currentAsk),
+    line("Video link", f.videoUrl),
+    "",
+    "Files included in this bundle:",
+    `  - ${appName} (completed application)`,
+    `  - ${deckName} (pitch deck)`,
+    "  - video-link.txt (founder video URL)",
+  ].join("\n");
+}
 
 const labelCls = "block text-[13px] font-semibold text-navy-800 mb-[6px]";
 const inputCls =
@@ -133,7 +159,21 @@ export default function ApplyForm({ onClose }: { onClose: () => void }) {
 
     setStatus("submitting");
     try {
-      // 1) Get signed upload URLs
+      // Bundle everything into one zip (application + deck + video link + summary)
+      const zip = new JSZip();
+      zip.file(application.name, application);
+      zip.file(deck.name, deck);
+      if (f.videoUrl.trim()) {
+        zip.file("video-link.txt", `Founder video:\n${f.videoUrl.trim()}\n`);
+      }
+      zip.file("summary.txt", buildSummary(f, application.name, deck.name));
+      const bundleBlob = await zip.generateAsync({ type: "blob" });
+      const safeCompany =
+        f.companyName.trim().replace(/[^a-zA-Z0-9._-]+/g, "-").slice(0, 60) ||
+        "application";
+      const bundleName = `${safeCompany}-application.zip`;
+
+      // 1) Get signed upload URLs (application, deck, and the bundle)
       const signRes = await fetch("/api/apply/sign", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -141,23 +181,30 @@ export default function ApplyForm({ onClose }: { onClose: () => void }) {
           files: [
             { field: "application", name: application.name },
             { field: "deck", name: deck.name },
+            { field: "bundle", name: bundleName },
           ],
         }),
       });
       if (!signRes.ok) throw new Error("Could not prepare the upload.");
       const { uploads } = await signRes.json();
 
-      // 2) Upload each file straight to Supabase
+      // 2) Upload each straight to Supabase
       const supabase = getBrowserClient();
-      const byField: Record<string, File> = { application, deck };
+      const blobByField: Record<string, Blob> = { application, deck, bundle: bundleBlob };
+      const nameByField: Record<string, string> = {
+        application: application.name,
+        deck: deck.name,
+        bundle: bundleName,
+      };
       const filesPayload: { field: string; path: string; filename: string }[] = [];
       for (const u of uploads) {
-        const file = byField[u.field];
+        const blob = blobByField[u.field];
+        const opts = u.field === "bundle" ? { contentType: "application/zip" } : undefined;
         const { error: upErr } = await supabase.storage
           .from(BUCKET)
-          .uploadToSignedUrl(u.path, u.token, file);
-        if (upErr) throw new Error(`Upload failed for ${file.name}.`);
-        filesPayload.push({ field: u.field, path: u.path, filename: file.name });
+          .uploadToSignedUrl(u.path, u.token, blob, opts);
+        if (upErr) throw new Error(`Upload failed for ${nameByField[u.field]}.`);
+        filesPayload.push({ field: u.field, path: u.path, filename: nameByField[u.field] });
       }
 
       // 3) Submit the record

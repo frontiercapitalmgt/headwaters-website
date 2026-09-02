@@ -17,6 +17,7 @@ export interface ApplicationFields {
   videoUrl?: string;
   applicationFile?: Attachment;
   pitchDeck?: Attachment;
+  bundle?: Attachment;
 }
 
 // Creates one record in the "Founder Applications" table. Attachment fields are
@@ -49,6 +50,10 @@ export async function createApplicationRecord(f: ApplicationFields) {
   if (f.pitchDeck)
     fields["Pitch Deck"] = [
       { url: f.pitchDeck.url, filename: f.pitchDeck.filename },
+    ];
+  if (f.bundle)
+    fields["Application Bundle"] = [
+      { url: f.bundle.url, filename: f.bundle.filename },
     ];
 
   const res = await fetch(
