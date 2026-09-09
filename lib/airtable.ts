@@ -74,3 +74,34 @@ export async function createApplicationRecord(f: ApplicationFields) {
   }
   return res.json();
 }
+
+/**
+ * Updates fields on an existing record. Only the fields passed are touched —
+ * everything else on the record is left alone, and nothing is ever deleted.
+ */
+export async function updateApplicationRecord(
+  recordId: string,
+  fields: Record<string, unknown>
+) {
+  const token = process.env.AIRTABLE_TOKEN;
+  const baseId = process.env.AIRTABLE_BASE_ID;
+  const table = process.env.AIRTABLE_TABLE;
+  if (!token || !baseId || !table) {
+    throw new Error("Airtable environment variables are missing");
+  }
+  const res = await fetch(
+    `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(table)}/${recordId}`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ fields }),
+    }
+  );
+  if (!res.ok) {
+    throw new Error(`Airtable update ${res.status}: ${await res.text()}`);
+  }
+  return res.json();
+}
