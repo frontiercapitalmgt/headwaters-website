@@ -12,6 +12,8 @@ import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 
 // Anthropic caps a request at 32MB; base64 inflates ~1.33x. Stay well under.
 const MAX_PDF_BYTES = 18 * 1024 * 1024;
+// Combined ceiling across every PDF attached to one request.
+const MAX_TOTAL_PDF_BYTES = 20 * 1024 * 1024;
 
 export const PILLARS = [
   "Pre-Revenue",
@@ -95,6 +97,9 @@ export interface ScreenInput {
   fields: Record<string, unknown>;
   deckPdf?: Buffer;
   deckFilename?: string;
+  /** Set when the completed application is itself a PDF. */
+  applicationPdf?: Buffer;
+  /** Set when the application text could be extracted (.docx). */
   applicationText?: string;
   siteText?: string;
 }
@@ -111,17 +116,25 @@ export async function generateScreen(input: ScreenInput): Promise<Screen> {
 
   const content: Anthropic.ContentBlockParam[] = [];
 
-  // PDF first, per API guidance
-  if (input.deckPdf && input.deckPdf.length <= MAX_PDF_BYTES) {
+  // PDFs first, per API guidance. Anthropic caps the whole request at 32MB
+  // once base64-inflated, so track what we have already attached.
+  let budget = MAX_TOTAL_PDF_BYTES;
+  const attach = (buf?: Buffer): boolean => {
+    if (!buf || buf.length > MAX_PDF_BYTES || buf.length > budget) return false;
+    budget -= buf.length;
     content.push({
       type: "document",
       source: {
         type: "base64",
         media_type: "application/pdf",
-        data: input.deckPdf.toString("base64"),
+        data: buf.toString("base64"),
       },
     });
-  }
+    return true;
+  };
+
+  const deckAttached = attach(input.deckPdf);
+  const applicationAttached = attach(input.applicationPdf);
 
   const facts = [
     `Company: ${fields["Company Name"] ?? "—"}`,
@@ -140,12 +153,17 @@ export async function generateScreen(input: ScreenInput): Promise<Screen> {
     "=== SUBMITTED DETAILS ===",
     facts,
   ];
-  if (!input.deckPdf) {
-    parts.push("", "(No pitch deck was readable for this submission.)");
-  } else if (input.deckPdf.length > MAX_PDF_BYTES) {
-    parts.push("", "(Pitch deck was too large to attach; judge from the other materials.)");
+  if (!deckAttached) {
+    parts.push("", input.deckPdf
+      ? "(Pitch deck was too large to attach; judge from the other materials.)"
+      : "(No pitch deck was readable for this submission.)");
   }
-  if (input.applicationText?.trim()) {
+  if (input.applicationPdf && !applicationAttached) {
+    parts.push("", "(Completed application was too large to attach.)");
+  }
+  if (applicationAttached) {
+    parts.push("", "(The completed application is attached as the second PDF above.)");
+  } else if (input.applicationText?.trim()) {
     parts.push("", "=== COMPLETED APPLICATION ===", input.applicationText.slice(0, 60000));
   }
   if (input.siteText?.trim()) {

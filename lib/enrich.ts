@@ -53,14 +53,19 @@ export async function enrichSubmission(input: EnrichInput): Promise<void> {
   };
   const [appBuf, deckBuf] = await Promise.all([grab(appRef.path), grab(deckRef.path)]);
 
-  // 2) application text (the template is .docx; fall back to raw text)
+  // 2) The template is .docx, but founders also send PDFs and plain text.
+  // A PDF goes to the model as a document; decoding it as utf8 would just
+  // send tens of thousands of characters of binary noise.
+  const isPdfApplication = /\.pdf$/i.test(appRef.filename);
   let applicationText = "";
-  try {
-    applicationText = /\.docx$/i.test(appRef.filename)
-      ? (await mammoth.extractRawText({ buffer: appBuf })).value
-      : appBuf.toString("utf8");
-  } catch (e) {
-    console.log("[enrich] could not extract application text:", (e as Error).message);
+  if (!isPdfApplication) {
+    try {
+      applicationText = /\.docx$/i.test(appRef.filename)
+        ? (await mammoth.extractRawText({ buffer: appBuf })).value
+        : appBuf.toString("utf8");
+    } catch (e) {
+      console.log("[enrich] could not extract application text:", (e as Error).message);
+    }
   }
 
   // 3) best-effort website context
@@ -72,6 +77,7 @@ export async function enrichSubmission(input: EnrichInput): Promise<void> {
     fields: f,
     deckPdf: isPdfDeck ? deckBuf : undefined,
     deckFilename: deckRef.filename,
+    applicationPdf: isPdfApplication ? appBuf : undefined,
     applicationText,
     siteText,
   });
