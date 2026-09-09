@@ -22,7 +22,7 @@ export const PILLARS = [
   "Valuable Problem",
 ] as const;
 
-const ScreenSchema = z.object({
+export const ScreenSchema = z.object({
   hook: z.string().describe("One sentence: what the company does and why it matters."),
   overview: z.string().describe("Short paragraph on the company, stage, and origin."),
   problem: z.string().describe("The problem and specifically why it is technically hard."),
@@ -35,14 +35,15 @@ const ScreenSchema = z.object({
       rationale: z.string().describe("One sentence justifying the score."),
     })
   ).describe("Exactly four entries, one per core criterion, in order."),
+  // No .max() here on purpose. A schema bound is a hard validation rule: one
+  // extra item and the whole parsed response is rejected and the API call is
+  // wasted. Length is steered by the prompt and enforced by slicing at render.
   concerns: z
     .array(z.string())
-    .max(6)
-    .describe("The 4-6 most material thesis tensions and company-level risks. One sentence each."),
+    .describe("The 4-6 most material thesis tensions and company-level risks, most material first. One sentence each."),
   unknowns: z
     .array(z.string())
-    .max(6)
-    .describe("The 4-6 most material questions the materials do not answer. One sentence each."),
+    .describe("The 4-6 most material questions the materials do not answer, most material first. One sentence each."),
 });
 
 export type Screen = z.infer<typeof ScreenSchema>;
