@@ -78,3 +78,33 @@ Airtable:
 - Storing files anywhere other than Airtable (Supabase only if size forces it)
 - Emailing applicants / auto-replies
 - An admin dashboard (Airtable is the review surface)
+
+---
+
+## Feature: Application health-check mode (Oct 2026)
+
+### Goal
+Let a weekly scheduled check prove the founder-application pipeline works end
+to end without creating a real-looking application, emailing anyone, or
+paying for an AI screen.
+
+### How it works
+- `POST /api/apply` with header `x-healthcheck-token: <HEALTHCHECK_TOKEN>` and
+  the normal required fields (firstName, lastName, companyName, email).
+- The route validates the fields as usual, then (instead of the real flow):
+  1. asks Supabase Storage for a signed upload URL (creates no file),
+  2. writes an Airtable record labelled `ZZ-HEALTHCHECK <timestamp>`,
+  3. deletes that same record,
+  4. confirms the email (Resend) and screening (Anthropic) keys are set.
+- No confirmation email is sent and no AI screen runs.
+- Response: `200 {healthcheck:true, ok:true, checks:{...}}` on success,
+  `503` with an `errors` list on any failure.
+
+### Secret
+- `HEALTHCHECK_TOKEN` — long random string, set in Vercel (Production).
+  If it is not set, health-check mode is off and nothing changes.
+
+### Done looks like
+- Build passes; a request without the header behaves exactly as before;
+  a request with the right header returns the check result and leaves no
+  record in Airtable.

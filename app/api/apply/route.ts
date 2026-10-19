@@ -4,6 +4,7 @@ import { createApplicationRecord } from "@/lib/airtable";
 import { sendApplicationReceivedEmail } from "@/lib/email";
 import { enrichSubmission } from "@/lib/enrich";
 import { waitUntil } from "@vercel/functions";
+import { isHealthCheck, runApplicationHealthCheck } from "@/lib/healthcheck";
 
 // Background enrichment runs after the response; Pro allows up to 300s.
 export const maxDuration = 300;
@@ -29,6 +30,17 @@ export async function POST(req: Request) {
           { status: 400 }
         );
       }
+    }
+
+    // Health-check mode: exercise storage + Airtable, then clean up.
+    // No email, no AI screen. See lib/healthcheck.ts.
+    if (isHealthCheck(req)) {
+      const result = await runApplicationHealthCheck();
+      console.log("[api/apply] health check done", JSON.stringify(result));
+      return NextResponse.json(
+        { healthcheck: true, ...result },
+        { status: result.ok ? 200 : 503 }
+      );
     }
 
     const supabase = getServiceClient();
