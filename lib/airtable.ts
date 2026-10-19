@@ -105,3 +105,24 @@ export async function updateApplicationRecord(
   }
   return res.json();
 }
+
+/**
+ * Deletes one record by id. Used only by health-check mode to remove the
+ * test record it just created — never called for real applications.
+ */
+export async function deleteApplicationRecord(recordId: string) {
+  const token = process.env.AIRTABLE_TOKEN;
+  const baseId = process.env.AIRTABLE_BASE_ID;
+  const table = process.env.AIRTABLE_TABLE;
+  if (!token || !baseId || !table) {
+    throw new Error("Airtable environment variables are missing");
+  }
+  const res = await fetch(
+    `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(table)}/${recordId}`,
+    { method: "DELETE", headers: { Authorization: `Bearer ${token}` } }
+  );
+  if (!res.ok) {
+    throw new Error(`Airtable delete ${res.status}: ${await res.text()}`);
+  }
+  return res.json();
+}
