@@ -1,5 +1,5 @@
 import { timingSafeEqual } from "crypto";
-import { getServiceClient, BUCKET } from "@/lib/supabaseServer";
+import { issueSignedToken } from "@vercel/blob";
 import {
   createApplicationRecord,
   deleteApplicationRecord,
@@ -39,7 +39,7 @@ export interface HealthCheckResult {
 
 /**
  * Runs the application pipeline end to end without side effects that reach
- * anyone: confirms Supabase storage can issue an upload URL, writes a clearly
+ * anyone: confirms Blob storage can issue an upload token, writes a clearly
  * labelled test record to Airtable, deletes it again, and confirms the email
  * and screening keys are configured. Sends no email and makes no AI call.
  */
@@ -48,17 +48,18 @@ export async function runApplicationHealthCheck(): Promise<HealthCheckResult> {
   const errors: string[] = [];
   const label = healthCheckLabel();
 
-  // 1. Storage: the same call /api/apply/sign makes. Issuing an upload URL
+  // 1. Storage: the same call /api/apply/sign makes. Issuing an upload token
   //    creates no file, so nothing is left behind.
   try {
-    const { error } = await getServiceClient()
-      .storage.from(BUCKET)
-      .createSignedUploadUrl(`healthcheck/${Date.now()}-probe.txt`);
-    if (error) throw new Error(error.message);
-    checks.supabaseStorage = "pass";
+    await issueSignedToken({
+      pathname: `healthcheck/${Date.now()}-probe.txt`,
+      operations: ["put"],
+      validUntil: Date.now() + 60 * 1000,
+    });
+    checks.blobStorage = "pass";
   } catch (e) {
-    checks.supabaseStorage = "fail";
-    errors.push(`supabaseStorage: ${(e as Error).message}`);
+    checks.blobStorage = "fail";
+    errors.push(`blobStorage: ${(e as Error).message}`);
   }
 
   // 2. Airtable write, then remove the test record.

@@ -14,7 +14,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { createClient } from "@supabase/supabase-js";
+import { put, issueSignedToken, presignUrl } from "@vercel/blob";
 import JSZip from "jszip";
 
 // ---- env -----------------------------------------------------------------
@@ -24,14 +24,13 @@ function loadEnv() {
   const env = {};
   for (const line of fs.readFileSync(p, "utf8").split(/\r?\n/)) {
     const m = line.match(/^([A-Z0-9_]+)=(.*)$/);
-    if (m) env[m[1]] = m[2];
+    if (m) env[m[1]] = m[2].replace(/^"(.*)"$/, "$1");
   }
   const need = [
     "AIRTABLE_TOKEN",
     "AIRTABLE_BASE_ID",
     "AIRTABLE_TABLE",
-    "NEXT_PUBLIC_SUPABASE_URL",
-    "SUPABASE_SERVICE_ROLE_KEY",
+    "BLOB_READ_WRITE_TOKEN",
   ];
   for (const k of need) if (!env[k]) throw new Error(`Missing ${k} in .env.local`);
   return env;
@@ -45,12 +44,7 @@ const AT = {
     "Content-Type": "application/json",
   },
 };
-const supabase = createClient(
-  env.NEXT_PUBLIC_SUPABASE_URL,
-  env.SUPABASE_SERVICE_ROLE_KEY,
-  { auth: { persistSession: false } }
-);
-const BUCKET = "applications";
+const BLOB_TOKEN = env.BLOB_READ_WRITE_TOKEN;
 
 // ---- helpers -------------------------------------------------------------
 const slug = (s) =>
@@ -105,13 +99,25 @@ function summaryText(f, files) {
 }
 
 async function uploadAndSign(storagePath, buf, contentType) {
-  const up = await supabase.storage
-    .from(BUCKET)
-    .upload(storagePath, buf, { contentType, upsert: true });
-  if (up.error) throw new Error("upload: " + up.error.message);
-  const s = await supabase.storage.from(BUCKET).createSignedUrl(storagePath, 3600);
-  if (s.error) throw new Error("sign: " + s.error.message);
-  return s.data.signedUrl;
+  await put(storagePath, buf, {
+    access: "private",
+    contentType,
+    addRandomSuffix: false,
+    allowOverwrite: true,
+    token: BLOB_TOKEN,
+  });
+  const signed = await issueSignedToken({
+    pathname: storagePath,
+    operations: ["get"],
+    validUntil: Date.now() + 3600 * 1000,
+    token: BLOB_TOKEN,
+  });
+  const { presignedUrl } = await presignUrl(signed, {
+    operation: "get",
+    pathname: storagePath,
+    access: "private",
+  });
+  return presignedUrl;
 }
 
 async function patchRecord(id, fields) {

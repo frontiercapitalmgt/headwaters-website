@@ -1,6 +1,6 @@
 import JSZip from "jszip";
 import mammoth from "mammoth";
-import { getServiceClient, BUCKET } from "@/lib/supabaseServer";
+import { readFile, saveFile, signedReadUrl } from "@/lib/blob";
 import { generateScreen, fetchSiteText } from "@/lib/screen";
 import { renderScreenPdf } from "@/lib/screenPdf";
 import { updateApplicationRecord } from "@/lib/airtable";
@@ -34,7 +34,6 @@ const line = (k: string, v: unknown) =>
 export async function enrichSubmission(input: EnrichInput): Promise<void> {
   const t0 = Date.now();
   console.log("[enrich] start", input.recordId);
-  const supabase = getServiceClient();
   const f = input.fields;
 
   const byField = Object.fromEntries(input.files.map((x) => [x.field, x]));
@@ -46,12 +45,7 @@ export async function enrichSubmission(input: EnrichInput): Promise<void> {
   }
 
   // 1) pull the two source files back out of storage
-  const grab = async (path: string): Promise<Buffer> => {
-    const { data, error } = await supabase.storage.from(BUCKET).download(path);
-    if (error || !data) throw new Error(`download ${path}: ${error?.message}`);
-    return Buffer.from(await data.arrayBuffer());
-  };
-  const [appBuf, deckBuf] = await Promise.all([grab(appRef.path), grab(deckRef.path)]);
+  const [appBuf, deckBuf] = await Promise.all([readFile(appRef.path), readFile(deckRef.path)]);
 
   // 2) The template is .docx, but founders also send PDFs and plain text.
   // A PDF goes to the model as a document; decoding it as utf8 would just
@@ -97,13 +91,8 @@ export async function enrichSubmission(input: EnrichInput): Promise<void> {
 
   // 5) upload the screen + a rebuilt bundle that contains it
   const put = async (path: string, buf: Buffer, contentType: string) => {
-    const up = await supabase.storage
-      .from(BUCKET)
-      .upload(path, buf, { contentType, upsert: true });
-    if (up.error) throw new Error(`upload ${path}: ${up.error.message}`);
-    const s = await supabase.storage.from(BUCKET).createSignedUrl(path, 3600);
-    if (s.error || !s.data) throw new Error(`sign ${path}: ${s.error?.message}`);
-    return s.data.signedUrl;
+    await saveFile(path, buf, contentType);
+    return signedReadUrl(path, 3600);
   };
 
   const screenUrl = await put(

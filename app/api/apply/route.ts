@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getServiceClient, BUCKET } from "@/lib/supabaseServer";
+import { signedReadUrl } from "@/lib/blob";
 import { createApplicationRecord } from "@/lib/airtable";
 import { sendApplicationReceivedEmail } from "@/lib/email";
 import { enrichSubmission } from "@/lib/enrich";
@@ -43,25 +43,26 @@ export async function POST(req: Request) {
       );
     }
 
-    const supabase = getServiceClient();
     const files = Array.isArray(body.files) ? body.files : [];
     const signed: Record<string, { url: string; filename: string }> = {};
     for (const file of files) {
       if (!file?.path) continue;
-      const { data, error } = await supabase.storage
-        .from(BUCKET)
-        .createSignedUrl(file.path, 3600); // 1h — long enough for Airtable to fetch
-      if (error || !data) {
-        console.log("[api/apply] signed-url error", error?.message);
+      // Only founder uploads may be attached — never screens, bundles or overviews.
+      if (!String(file.path).startsWith("submissions/")) {
+        return NextResponse.json({ error: "Invalid file reference" }, { status: 400 });
+      }
+      try {
+        signed[file.field] = {
+          url: await signedReadUrl(file.path, 3600), // 1h — long enough for Airtable to fetch
+          filename: file.filename || "file",
+        };
+      } catch (err) {
+        console.log("[api/apply] signed-url error", (err as Error).message);
         return NextResponse.json(
           { error: "Could not read an uploaded file" },
           { status: 500 }
         );
       }
-      signed[file.field] = {
-        url: data.signedUrl,
-        filename: file.filename || "file",
-      };
     }
 
     const created = await createApplicationRecord({

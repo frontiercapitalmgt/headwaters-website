@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import JSZip from "jszip";
-import { getBrowserClient, BUCKET } from "@/lib/supabaseBrowser";
-
-const MAX_BYTES = 50 * 1024 * 1024; // 50 MB
+import { contentTypeFor, MAX_FILE_BYTES } from "@/lib/uploadTypes";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -151,7 +149,11 @@ export default function ApplyForm({ onClose }: { onClose: () => void }) {
       return;
     }
     for (const file of [application, deck]) {
-      if (file.size > MAX_BYTES) {
+      if (!contentTypeFor(file.name)) {
+        setError(`"${file.name}" isn't a PDF, Word, or PowerPoint file. Please choose a different file.`);
+        return;
+      }
+      if (file.size > MAX_FILE_BYTES) {
         setError(`"${file.name}" is larger than 50 MB. Please upload a smaller file.`);
         return;
       }
@@ -173,7 +175,7 @@ export default function ApplyForm({ onClose }: { onClose: () => void }) {
         "application";
       const bundleName = `${safeCompany}-application.zip`;
 
-      // 1) Get signed upload URLs (application, deck, and the bundle)
+      // 1) Get presigned upload URLs (application, deck, and the bundle)
       const signRes = await fetch("/api/apply/sign", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -188,8 +190,7 @@ export default function ApplyForm({ onClose }: { onClose: () => void }) {
       if (!signRes.ok) throw new Error("Could not prepare the upload.");
       const { uploads } = await signRes.json();
 
-      // 2) Upload each straight to Supabase
-      const supabase = getBrowserClient();
+      // 2) Upload each straight to private Vercel Blob storage
       const blobByField: Record<string, Blob> = { application, deck, bundle: bundleBlob };
       const nameByField: Record<string, string> = {
         application: application.name,
@@ -198,12 +199,12 @@ export default function ApplyForm({ onClose }: { onClose: () => void }) {
       };
       const filesPayload: { field: string; path: string; filename: string }[] = [];
       for (const u of uploads) {
-        const blob = blobByField[u.field];
-        const opts = u.field === "bundle" ? { contentType: "application/zip" } : undefined;
-        const { error: upErr } = await supabase.storage
-          .from(BUCKET)
-          .uploadToSignedUrl(u.path, u.token, blob, opts);
-        if (upErr) throw new Error(`Upload failed for ${nameByField[u.field]}.`);
+        const up = await fetch(u.url, {
+          method: "PUT",
+          headers: { "Content-Type": u.contentType },
+          body: blobByField[u.field],
+        }).catch(() => null);
+        if (!up?.ok) throw new Error(`Upload failed for ${nameByField[u.field]}.`);
         filesPayload.push({ field: u.field, path: u.path, filename: nameByField[u.field] });
       }
 

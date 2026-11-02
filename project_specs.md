@@ -92,7 +92,7 @@ paying for an AI screen.
 - `POST /api/apply` with header `x-healthcheck-token: <HEALTHCHECK_TOKEN>` and
   the normal required fields (firstName, lastName, companyName, email).
 - The route validates the fields as usual, then (instead of the real flow):
-  1. asks Supabase Storage for a signed upload URL (creates no file),
+  1. asks Vercel Blob for an upload token (creates no file),
   2. writes an Airtable record labelled `ZZ-HEALTHCHECK <timestamp>`,
   3. deletes that same record,
   4. confirms the email (Resend) and screening (Anthropic) keys are set.
@@ -108,3 +108,65 @@ paying for an AI screen.
 - Build passes; a request without the header behaves exactly as before;
   a request with the right header returns the check result and leaves no
   record in Airtable.
+
+---
+
+## Feature: Move file storage from Supabase to Vercel Blob (Oct 2026) — APPROVED, built + tested locally, not yet deployed
+
+### Why
+The free Supabase project pauses after ~7 days of inactivity. While paused,
+founders cannot upload files, so no application can be submitted, and the
+automated screen cannot download the deck. Vercel Blob lives inside the
+Vercel team that already hosts the site and does not pause.
+
+### What changes (same flow, different storage)
+- **Store:** one **private** Vercel Blob store (e.g. `headwaters-applications`)
+  in the `graham-8890s-projects` team, connected to `headwaters-clone`.
+  Private = no file is readable without a signed link.
+- **`/api/apply/sign`:** same request/response shape as before, but returns
+  presigned Blob upload URLs (`issueSignedToken` + `presignUrl`) instead of
+  Supabase ones. The server picks each path; only PDF / DOC / DOCX / PPT /
+  PPTX / ZIP names are accepted (the stored type comes from the extension);
+  each URL is locked to its path, 105 MB ceiling, no overwrite, 10 minutes.
+  (`handleUploadPresigned` was not used: it refuses to run without a
+  `BLOB_WEBHOOK_PUBLIC_KEY` the CLI does not provision, for a callback we
+  don't use.)
+- **`ApplyForm.tsx`:** PUTs each file to its presigned URL instead of using the
+  Supabase browser client, and rejects non-PDF/Word/PowerPoint files up front.
+  Form, fields and other messages unchanged.
+- **New helpers:** `lib/blob.ts` (server-only read / save / signed link) and
+  `lib/uploadTypes.ts` (allowed types + size limits, shared with the form).
+- **`/api/apply`:** gives Airtable a 1-hour presigned *read* link for each file
+  (as it does today with Supabase signed links). Airtable still copies the files.
+- **`lib/enrich.ts`:** reads the deck + application with Blob `get()`, saves the
+  screen PDF and rebuilt bundle with `put()`, hands Airtable presigned links.
+- **`lib/healthcheck.ts`:** the storage check issues a Blob upload token instead
+  of a Supabase one (creates no file). Its result key is now `blobStorage`
+  (was `supabaseStorage`).
+- **`tools/deal.mjs`:** overview upload switches to Blob the same way.
+- **Remove:** `lib/supabaseServer.ts`, `lib/supabaseBrowser.ts`, the
+  `@supabase/*` packages, and the Supabase env vars, once Blob is verified.
+
+### Store + secrets
+- Store `headwaters-applications` (`store_Oh0sPsdwOtOpktAF`), private, iad1,
+  connected to `headwaters-clone` in all environments.
+- `BLOB_READ_WRITE_TOKEN` — added to Vercel (all environments) automatically
+  when the store was connected; also in `.env.local` for local dev + `tools/`.
+
+### Existing data
+Nothing to migrate: every past application's files already live in Airtable.
+Supabase can be deleted (or left paused) after the switch.
+
+### Cost
+Tiny volume (a few applications/month, ~10–50 MB each) — within the free
+allowance on Hobby, pennies on Pro.
+
+### Done looks like
+- `npm run build` passes.
+- A real test submission on localhost uploads to Blob, creates the Airtable
+  record with all three files attached, sends the confirmation email, and
+  attaches the Auto Screen + rebuilt bundle.
+- Error path: a wrong file type or oversized file shows a clear message and
+  keeps the founder's input.
+- Health check returns `ok: true` on the deployed site.
+- Same test passes on the deployed Vercel site.
