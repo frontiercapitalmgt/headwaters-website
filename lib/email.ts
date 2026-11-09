@@ -22,9 +22,13 @@ function escapeHtml(s: string): string {
 export async function sendApplicationReceivedEmail(opts: ConfirmationOpts) {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.APPLY_FROM_EMAIL;
-  const cc = process.env.APPLY_CC_EMAIL || undefined;
+  // Comma-separated, e.g. "jack@frontierangels.com,graham@frontierangels.com"
+  const cc = (process.env.APPLY_CC_EMAIL || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
   // The from-domain has no inbox, so point replies at a real mailbox.
-  const replyTo = process.env.APPLY_REPLY_TO || cc;
+  const replyTo = process.env.APPLY_REPLY_TO || cc[0];
 
   if (!apiKey || !from) {
     console.log("[email] skipped — RESEND_API_KEY or APPLY_FROM_EMAIL not set");
@@ -73,7 +77,7 @@ export async function sendApplicationReceivedEmail(opts: ConfirmationOpts) {
     const { error } = await resend.emails.send({
       from,
       to: toEmail,
-      cc,
+      cc: cc.length ? cc : undefined,
       replyTo,
       subject: `We received your application — ${company}`,
       text,
@@ -82,7 +86,7 @@ export async function sendApplicationReceivedEmail(opts: ConfirmationOpts) {
     if (error) {
       console.log("[email] send error:", JSON.stringify(error));
     } else {
-      console.log("[email] confirmation sent to", toEmail, cc ? `(cc ${cc})` : "");
+      console.log("[email] confirmation sent to", toEmail, cc.length ? `(cc ${cc.join(", ")})` : "");
     }
   } catch (e) {
     console.log("[email] send threw:", (e as Error).message);
